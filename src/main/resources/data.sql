@@ -1,0 +1,2 @@
+INSERT INTO MEMBER (login_id, password, shop_address, shop_name) VALUES ('buyer', 'pass1', 'shop_addr1', 'shop_name1')
+INSERT INTO MEMBER (login_id, password, shop_address, shop_name) VALUES ('seller', 'pass2', 'shop_addr2', 'shop_name2')
