@@ -1,16 +1,34 @@
 package ex.marketboro.dddprac.member.domain;
 
+import lombok.Getter;
+
+import javax.persistence.*;
+
+@Entity
 public class Member {
 
-    final private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    final private String loginId;
+    private String loginId;
 
-    final private String password;
+    private String password;
 
-    public Member(Long id, String loginId, String password) {
-        this.id = id;
+    @Getter
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "name", column = @Column(name = "shop_name")),
+            @AttributeOverride(name = "address", column = @Column(name = "shop_address"))
+    })
+    private Shop shop;
+
+    protected Member() {
+    }
+
+    public Member(String loginId, String password, Shop shop) {
         this.loginId = loginId;
         this.password = password;
+        this.shop = shop;
     }
 }
