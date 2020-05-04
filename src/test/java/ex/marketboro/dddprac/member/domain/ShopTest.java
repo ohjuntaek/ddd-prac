@@ -5,6 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ShopTest {
@@ -27,4 +30,15 @@ class ShopTest {
     }
 
 
+    @Test
+    @DisplayName("shop 동등성 테스트")
+    public void testEqual() {
+        Shop newShop = new Shop("shop1", "address1");
+
+        assertThat(shop, is(newShop));
+
+        Shop otherShop = new Shop("shop2", "address1");
+
+        assertThat(shop, not(otherShop));
+    }
 }

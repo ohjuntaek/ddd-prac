@@ -1,5 +1,6 @@
 package ex.marketboro.dddprac.member.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.Access;
@@ -8,6 +9,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 @Access(AccessType.FIELD)
+@EqualsAndHashCode
 public class Shop {
 
     @Getter
