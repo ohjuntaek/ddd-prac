@@ -66,16 +66,21 @@ domain driven design 연습 repo
 #### Goods(상품)
 
 - (goods_name, goods_code, goods_category)
-- FK : member_id(소유)
-- 회원 (1 : N) 상품
 
 - [x] 생성 테스트
 - [x] 동등성 테스트
-- [x] 회원이 상품을 생성한다.
-- [ ] 회원이 소유한 상품을 코드별로 조회, 수정, 삭제한다.
 
-- [ ] 회원이 소유하지 않은 상품을 조회한다.
-- [ ] 회원이 소유하지 않은 상품은 수정, 삭제할 수 없다.
+<FK : member_id(소유)>
+<회원 (1 : N) 상품>
+
+- [x] 회원이 상품을 생성한다.
+- [x] 회원이 소유한 상품을 코드별로 조회한다.
+- [x] 회원이 소유한 상품을 코드별로 수정한다.
+- [x] 회원이 소유한 상품을 코드별로 삭제한다.
+
+- [x] 회원이 소유하지 않은 상품을 조회할 수 있다.
+- [x] 회원이 소유하지 않은 상품은 수정할 수 없다.
+- [x] 회원이 소유하지 않은 상품은 삭제할 수 없다.
 
 #### Orders(주문)
 
@@ -101,10 +106,10 @@ domain driven design 연습 repo
 - https://github.com/wotjd243/fastcampus.ddd-alone
 
 
-## TO-DO
+## 공통 TO-DO
 
 - [ ] Shop 값 객체
-
+= [ ] return null, NPE 방지 전략 적용
 
 
 
