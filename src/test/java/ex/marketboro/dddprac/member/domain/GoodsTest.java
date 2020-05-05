@@ -33,5 +33,4 @@ class GoodsTest {
         assertThat(goods1, is(goods2));
     }
 
-
 }

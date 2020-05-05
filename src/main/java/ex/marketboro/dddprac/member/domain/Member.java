@@ -27,7 +27,7 @@ public class Member {
 
     @Getter
     @ElementCollection
-    private Map<String, Goods> goodsMap = new HashMap();
+    private final Map<String, Goods> goodsMap = new HashMap();
 
 
     protected Member() {
@@ -48,6 +48,30 @@ public class Member {
         return newGoods;
     }
 
-    public void updateGoods(String goods_code_a, String goods_name_11, String goods_category_11) {
+    public Goods updateGoods(String goodsCode, String goodsName, String goodsCategory) {
+
+        if (!goodsMap.containsKey(goodsCode)) return null;
+
+        Goods beforeGoods = goodsMap.get(goodsCode);
+        if (isSameGoods(goodsName, goodsCategory, beforeGoods)) return null;
+
+        Goods updateGoods = new Goods(goodsName, goodsCategory);
+        goodsMap.put(goodsCode, new Goods(goodsName, goodsCategory));
+        // goods는 불변 객체이므로 새로 생성해서 사용
+        // 이렇게 해서 회원은 자기 자신 이외의 상품에 대해 조회는 가능하게, 수정은 불가능하게 할 수 있음.
+        return updateGoods;
+    }
+
+    private boolean isSameGoods(String goodsName, String goodsCategory, Goods beforeGoods) {
+        return beforeGoods.getName().equals(goodsName) && beforeGoods.getCategory().equals(goodsCategory);
+    }
+
+    public boolean deleteGoods(String goodsCodeOfFirstMember) {
+        Goods deletedGoods = goodsMap.remove(goodsCodeOfFirstMember);
+        return deletedGoods != null;
+    }
+
+    protected Map<String, Goods> getOtherMemberGoodsList(Member otherMember) {
+        return otherMember.getGoodsMap();
     }
 }
