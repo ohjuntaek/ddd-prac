@@ -1,0 +1,60 @@
+###
+
+POST localhost:8080/goods?memberLoginId=buyer
+Content-Type: application/json
+
+{
+  "code": "goods_code_1_1",
+  "name": "goods_name_1_1",
+  "category": "goods_category_1"
+}
+
+###
+
+POST localhost:8080/goods?memberLoginId=buyer
+Content-Type: application/json
+
+{
+  "code": "goods_code_1_2",
+  "name": "goods_name_1_2",
+  "category": "goods_category_1"
+}
+
+###
+
+POST localhost:8080/goods?memberLoginId=buyer
+Content-Type: application/json
+
+{
+  "code": "goods_code_2_1",
+  "name": "goods_name_2_1",
+  "category": "goods_category_2"
+}
+
+###
+
+POST localhost:8080/goods?memberLoginId=seller
+Content-Type: application/json
+
+{
+  "code": "goods_code_2_2",
+  "name": "goods_name_2_2",
+  "category": "goods_category_2"
+}
+
+###
+
+PUT localhost:8080/goods?memberLoginId=buyer
+Content-Type: application/json
+
+{
+  "code": "goods_code_1_1",
+  "name": "goods_name_1_1_updated",
+  "category": "goods_category_1"
+}
+
+###
+
+DELETE localhost:8080/goods/goods_code_1_1?memberLoginId=buyer
+
+###
