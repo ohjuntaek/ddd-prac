@@ -74,7 +74,6 @@ domain driven design 연습 repo
 #### Goods(상품)
 
 - (goods_name, goods_category)
-- 
 
 - [x] 생성 테스트
 - [] 유일성 테스트

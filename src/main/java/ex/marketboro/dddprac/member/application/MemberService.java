@@ -1,7 +1,6 @@
 package ex.marketboro.dddprac.member.application;
 
 import ex.marketboro.dddprac.member.domain.Goods;
-import ex.marketboro.dddprac.member.domain.GoodsOnly;
 import ex.marketboro.dddprac.member.domain.Member;
 import ex.marketboro.dddprac.member.domain.MemberRepository;
 import ex.marketboro.dddprac.member.dto.GoodsDTO;
@@ -10,9 +9,6 @@ import ex.marketboro.dddprac.orders.domain.Orders;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -47,22 +43,27 @@ public class MemberService {
         return member.getGoodsMap();
     }
 
-    public Goods getGoodsOfMemberByCode(String memberLoginId, String code) {
+    public Goods getGoodsByCode(String memberLoginId, String code) {
         Member member = memberRepository.findMemberByLoginId(memberLoginId);
         /*
         아니 생각해보니 Goods는 따로 관리해줘야 할려나?
-        이유 1. 조회할 때 상품코드만으로 조회해줘야 하는데?
+        따로 뺄 이유 : 조회할 때 상품코드만으로 조회해줘야 하는데?
         => Goods는 테이블 따로 나오니깐 쿼리 입력하면 되긴 됨 => 아니 이거 너무 이상한데?
-        이유 2. 생명주기가 같은거 같은데...
+        안 뺄 이유 : 생명주기가 같은거 같은데...
         => Member가 사라지면 그에 딸려있는 Goods도 사라지긴 함
+
+        ==> 생각해보니 API를 잘못 생각했네... 상품만 따로 볼 순 없지 요구사항이 멤버의 상품을 봐야하는데 여기서 착오가 생겻네 다음 커밋에서 주석 삭제
          */
-        Collection<GoodsOnly> goodsOnlyCollection = memberRepository.findGoodsByCode(code);
-        List<GoodsOnly> goodsOnlyList = new ArrayList<>(goodsOnlyCollection);
+//        Collection<GoodsOnly> goodsOnlyCollection = memberRepository.findGoodsByCode(code);
+//        List<GoodsOnly> goodsOnlyList = new ArrayList<>(goodsOnlyCollection);
+//
+//        GoodsOnly goodsOnly = goodsOnlyList.get(0);
+//
+//        return new Goods(goodsOnly.getName(), goodsOnly.getCategory());
 
-        GoodsOnly goodsOnly = goodsOnlyList.get(0);
-
-        return new Goods(goodsOnly.getName(), goodsOnly.getCategory());
+        return member.getGoodsMap().get(code);
     }
+
 
     @Transactional
     public Goods updateGoods(String memberLoginId, GoodsDTO goodsDTO) {
@@ -74,6 +75,12 @@ public class MemberService {
     public boolean deleteGoodsOfMemberByCode(String memberLoginId, String code) {
         Member member = memberRepository.findMemberByLoginId(memberLoginId);
         return member.removeOwnGoods(code);
+    }
+
+    public Map<String, Goods> getGoodsMapOfOtherMember(String memberLoginId, String otherMemberLoginId) {
+        Member member = memberRepository.findMemberByLoginId(memberLoginId);
+        Member otherMember = memberRepository.findMemberByLoginId(otherMemberLoginId);
+        return member.getOtherMemberGoodsMap(otherMember);
     }
 }
 

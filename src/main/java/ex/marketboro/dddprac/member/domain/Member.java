@@ -76,7 +76,7 @@ public class Member {
         return deletedGoods != null;
     }
 
-    protected Map<String, Goods> getOtherMemberGoodsMap(Member otherMember) {
+    public Map<String, Goods> getOtherMemberGoodsMap(Member otherMember) {
         return otherMember.getGoodsMap();
     }
 
