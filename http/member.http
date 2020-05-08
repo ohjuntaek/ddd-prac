@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8080/goods?memberloginid=buyer
+POST localhost:8080/goods?memberloginid=seller
 Content-Type: application/json
 
 {
@@ -55,6 +55,23 @@ Content-Type: application/json
 
 ###
 
-DELETE localhost:8080/goods/goods_code_1_1?memberloginid=buyer
+#DELETE localhost:8080/goods/goods_code_1_1?memberloginid=buyer
 
 ###
+
+POST localhost:8080/order/seller?memberloginid=buyer
+Content-Type: application/json
+
+{
+  "description": "order_1_desc",
+  "goodsCodes": [
+    "goods_code_2_1",
+    "goods_code_2_2",
+    "goods_code_2_3"
+  ]
+}
+###
+
+
+
+

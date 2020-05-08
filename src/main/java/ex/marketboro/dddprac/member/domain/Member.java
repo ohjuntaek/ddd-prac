@@ -2,6 +2,7 @@ package ex.marketboro.dddprac.member.domain;
 
 import ex.marketboro.dddprac.member.dto.GoodsDTO;
 import ex.marketboro.dddprac.orders.domain.Orders;
+import ex.marketboro.dddprac.orders.dto.OrderDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -31,7 +32,7 @@ public class Member {
 
     @Getter
     @ElementCollection
-    private final Map<String, Goods> goodsMap = new HashMap();
+    private final Map<String, Goods> goodsMap = new HashMap<>();
 
 //    private MemberService memberService;
 
@@ -81,17 +82,20 @@ public class Member {
     }
 
     // ==== in terms of buyer
-    public void order(Member seller, Orders order) {
-        seller.ordered(this, order);
+    public Orders order(String sellerId, OrderDTO orderDTO) {
+        return new Orders(orderDTO.getDescription(), null, this.loginId, sellerId, orderDTO.getGoodsCodes());
     }
 
-    public void proceedApprovedOrder(Orders order) {
-        order.getGoodsMap().forEach(this.goodsMap::put);
+    public boolean addOrderItems(Map<String, Goods> goodsMapInOrder) {
+        goodsMapInOrder.forEach(goodsMap::put);
+
+        return true;
     }
+
 
     // ==== in terms of seller
     private boolean ordered(Member buyer, Orders order) {
-        // TODO : 주문에 대해 승낙할 건지 거절할 건지 선택해라는 이벤트 발생시켜라
+        // FIXME : 주문에 대해 승낙할 건지 거절할 건지 선택해라는 이벤트 발생시켜라 => 화면에서 선택 받으면 되네... 커밋 후 삭제
         // 승낙
 //        memberService.approveOrder(buyer, this, order);
         return true;
@@ -101,12 +105,11 @@ public class Member {
 //        return false;
     }
 
-    public boolean approveOrder(Orders order) {
-        Map<String, Goods> orderedGoodsMap = order.getGoodsMap();
-        if (!hasAllGoods(orderedGoodsMap)) return false;
+    public boolean approveOrder(Orders order, Map<String, Goods> goodsMapInOrder) {
+        if (!hasAllGoods(goodsMapInOrder)) return false;
 
         goodsMap.entrySet()
-                .removeIf((entry) -> orderedGoodsMap.containsKey(entry.getKey()));
+                .removeIf((entry) -> goodsMapInOrder.containsKey(entry.getKey()));
 
         return true;
     }
@@ -115,5 +118,4 @@ public class Member {
         return orderedGoodsMap.entrySet().stream()
                 .allMatch((entry) -> this.goodsMap.containsKey(entry.getKey()));
     }
-
 }

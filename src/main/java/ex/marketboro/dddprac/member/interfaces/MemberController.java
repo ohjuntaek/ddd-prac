@@ -50,5 +50,4 @@ public class MemberController {
         boolean body = memberService.deleteGoodsOfMemberByCode(memberLoginId, code);
         return ResponseEntity.ok().body(body);
     }
-
 }

@@ -4,33 +4,16 @@ import ex.marketboro.dddprac.member.domain.Goods;
 import ex.marketboro.dddprac.member.domain.Member;
 import ex.marketboro.dddprac.member.domain.MemberRepository;
 import ex.marketboro.dddprac.member.dto.GoodsDTO;
-import ex.marketboro.dddprac.orders.domain.OrderRepository;
-import ex.marketboro.dddprac.orders.domain.Orders;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final OrderRepository orderRepository;
-
-    public MemberService(MemberRepository memberRepository, OrderRepository orderRepository) {
-        this.memberRepository = memberRepository;
-        this.orderRepository = orderRepository;
-    }
-
-    @Transactional
-    public void approveOrder(Member buyer, Member seller, Orders order) {
-        boolean isOrderSucceed = seller.approveOrder(order);
-        if (isOrderSucceed) buyer.proceedApprovedOrder(order);
-        // 이벤트써서 order의 상태 변경
-    }
-
-    public void declineOrder(Member buyer, Member seller, Orders order) {
-        orderRepository.delete(order);
-    }
 
     @Transactional
     public Goods createGoodsOfMember(String memberLoginId, GoodsDTO goodsDTO) {
@@ -45,22 +28,6 @@ public class MemberService {
 
     public Goods getGoodsByCode(String memberLoginId, String code) {
         Member member = memberRepository.findMemberByLoginId(memberLoginId);
-        /*
-        아니 생각해보니 Goods는 따로 관리해줘야 할려나?
-        따로 뺄 이유 : 조회할 때 상품코드만으로 조회해줘야 하는데?
-        => Goods는 테이블 따로 나오니깐 쿼리 입력하면 되긴 됨 => 아니 이거 너무 이상한데?
-        안 뺄 이유 : 생명주기가 같은거 같은데...
-        => Member가 사라지면 그에 딸려있는 Goods도 사라지긴 함
-
-        ==> 생각해보니 API를 잘못 생각했네... 상품만 따로 볼 순 없지 요구사항이 멤버의 상품을 봐야하는데 여기서 착오가 생겻네 다음 커밋에서 주석 삭제
-         */
-//        Collection<GoodsOnly> goodsOnlyCollection = memberRepository.findGoodsByCode(code);
-//        List<GoodsOnly> goodsOnlyList = new ArrayList<>(goodsOnlyCollection);
-//
-//        GoodsOnly goodsOnly = goodsOnlyList.get(0);
-//
-//        return new Goods(goodsOnly.getName(), goodsOnly.getCategory());
-
         return member.getGoodsMap().get(code);
     }
 
@@ -82,6 +49,13 @@ public class MemberService {
         Member otherMember = memberRepository.findMemberByLoginId(otherMemberLoginId);
         return member.getOtherMemberGoodsMap(otherMember);
     }
+
+    // in terms of seller
+
+
+//    public void declineOrder(Member buyer, Member seller, Orders order) {
+//        orderRepository.delete(order);
+//    }
 }
 
 

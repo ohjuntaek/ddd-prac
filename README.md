@@ -100,11 +100,10 @@ Map<String, Goods> goodsMap
 > 주문에 대해 판매자가 승낙했는지 거부했는지를 저장한다.
 > 추후 주문에 대한 로직(상태 변경, 주문 상품 변경 등) 추가
 
-- [ ] 회원이 주문한다.
-- [ ] 주문 트랜잭션 처리
-- [ ] 주문에 대해 판매자가 승낙한다.
+- [x] 회원이 주문한다.
+- [x] 회원이 자신이 주문한 주문 목록을 조회한다.
+- [x] 주문에 대해 판매자가 승낙한다.
 - [ ] 주문에 대해 판매자가 주문을 거절한다.
-
 
 ### OrderLines(주문 상품)
 
@@ -119,7 +118,7 @@ Map<String, Goods> goodsMap
 ## 참고 링크
 
 - https://github.com/wotjd243/fastcampus.ddd-alone
-
+- https://github.com/madvirus/ddd-start
 
 ## 공통 TO-DO
 
@@ -129,7 +128,7 @@ Map<String, Goods> goodsMap
 
 ### 인가 관련
 
-> 현재는 @PathVariable로 앞에 라우팅을 해서 api에 접근
-> 추후 jwt를 이용하고 앞에 @PathVariable 없애기
+> 현재는 파라미터로 api에 접근
+> 추후 jwt를 이용하고 파라미터 없애기
 
 
