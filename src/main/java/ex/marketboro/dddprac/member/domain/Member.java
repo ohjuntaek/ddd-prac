@@ -1,8 +1,6 @@
 package ex.marketboro.dddprac.member.domain;
 
 import ex.marketboro.dddprac.member.dto.GoodsDTO;
-import ex.marketboro.dddprac.orders.domain.Orders;
-import ex.marketboro.dddprac.orders.dto.OrderDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -34,8 +32,6 @@ public class Member {
     @ElementCollection
     private final Map<String, Goods> goodsMap = new HashMap<>();
 
-//    private MemberService memberService;
-
     protected Member() {
     }
 
@@ -63,8 +59,6 @@ public class Member {
 
         Goods updateGoods = new Goods(goodsDTO.getName(), goodsDTO.getCategory());
         goodsMap.put(goodsDTO.getCode(), new Goods(goodsDTO.getName(), goodsDTO.getCategory()));
-        // goods는 불변 객체이므로 새로 생성해서 사용
-        // 이렇게 해서 회원은 자기 자신 이외의 상품에 대해 조회는 가능하게, 수정은 불가능하게 할 수 있음.
         return updateGoods;
     }
 
@@ -82,36 +76,19 @@ public class Member {
     }
 
     // ==== in terms of buyer
-    public Orders order(String sellerId, OrderDTO orderDTO) {
-        return new Orders(orderDTO.getDescription(), null, this.loginId, sellerId, orderDTO.getGoodsCodes());
-    }
 
-    public boolean addOrderItems(Map<String, Goods> goodsMapInOrder) {
+    public void addOrderItems(Map<String, Goods> goodsMapInOrder) {
         goodsMapInOrder.forEach(goodsMap::put);
-
-        return true;
     }
-
 
     // ==== in terms of seller
-    private boolean ordered(Member buyer, Orders order) {
-        // FIXME : 주문에 대해 승낙할 건지 거절할 건지 선택해라는 이벤트 발생시켜라 => 화면에서 선택 받으면 되네... 커밋 후 삭제
-        // 승낙
-//        memberService.approveOrder(buyer, this, order);
-        return true;
 
-//        // 거절
-//        memberService.declineOrder(buyer, this, order);
-//        return false;
-    }
-
-    public boolean approveOrder(Orders order, Map<String, Goods> goodsMapInOrder) {
-        if (!hasAllGoods(goodsMapInOrder)) return false;
+    public void approveOrder(Map<String, Goods> goodsMapInOrder) {
+        if (!hasAllGoods(goodsMapInOrder)) return;
 
         goodsMap.entrySet()
                 .removeIf((entry) -> goodsMapInOrder.containsKey(entry.getKey()));
 
-        return true;
     }
 
     private boolean hasAllGoods(Map<String, Goods> orderedGoodsMap) {

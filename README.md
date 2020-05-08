@@ -132,3 +132,7 @@ Map<String, Goods> goodsMap
 > 추후 jwt를 이용하고 파라미터 없애기
 
 
+### 리팩토링
+
+- [x] OrderService의 트랜잭션이 하나의 애그리거트만 참조할 수 있게 하기
+    - 이벤트 활용

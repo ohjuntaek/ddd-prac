@@ -4,11 +4,16 @@ import ex.marketboro.dddprac.member.domain.Goods;
 import ex.marketboro.dddprac.member.domain.Member;
 import ex.marketboro.dddprac.member.domain.MemberRepository;
 import ex.marketboro.dddprac.member.dto.GoodsDTO;
+import ex.marketboro.dddprac.orders.domain.ApprovedOrderEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +56,24 @@ public class MemberService {
     }
 
     // in terms of seller
+
+    @EventListener
+    public void approveOrder(final ApprovedOrderEvent event) {
+        final Member seller = memberRepository.findMemberByLoginId(event.getMemberLoginId());
+
+        Map<String, Goods> goodsMapInOrder = seller.getGoodsMap().entrySet().stream()
+                .filter((entry) -> {
+                    List<String> goodsCodeList = event.getGoodsCodeList();
+                    return goodsCodeList.stream()
+                            .anyMatch(Predicate.isEqual(entry.getKey()));
+                })
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        seller.approveOrder(goodsMapInOrder);
+
+        final Member buyer = memberRepository.findMemberByLoginId(event.getBuyerId());
+        buyer.addOrderItems(goodsMapInOrder);
+    }
 
 
 //    public void declineOrder(Member buyer, Member seller, Orders order) {

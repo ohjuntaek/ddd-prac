@@ -16,8 +16,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/order/{seller}")
-    public ResponseEntity<?> order(@RequestParam("memberloginid") String memberLoginId, @PathVariable String seller, @RequestBody OrderDTO orderDTOS) {
-        String body = orderService.order(memberLoginId, seller, orderDTOS);
+    public ResponseEntity<?> order(@RequestParam("memberloginid") String memberLoginId, @PathVariable String seller, @RequestBody OrderDTO orderDTO) {
+        String body = orderService.order(memberLoginId, seller, orderDTO);
         return ResponseEntity.ok().body(body);
     }
 
