@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 
-import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
 class GoodsTest {
@@ -30,7 +30,7 @@ class GoodsTest {
     public void testEquality() {
         Goods goods1 = new Goods("b", "c");
         Goods goods2 = new Goods("b", "c");
-        assertThat(goods1, is(goods2));
+        assertThat(goods1, not(goods2));
     }
 
 }

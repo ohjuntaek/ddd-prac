@@ -1,13 +1,13 @@
 package ex.marketboro.dddprac.member.domain;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
-@EqualsAndHashCode
 public class Goods {
+
+//    private String code;
 
     @Getter
     private String name;

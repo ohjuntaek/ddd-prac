@@ -1,5 +1,6 @@
 package ex.marketboro.dddprac.member.domain;
 
+import ex.marketboro.dddprac.member.dto.GoodsDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,12 +17,14 @@ class MemberTest {
     // first Member
     private Member firstMember;
     private Shop shopOfFirstMember;
-    private String goodsCodeOfFirstMember, goodsNameOfFirstMember, goodsCategoryOfFirstMember;
+    private String goodsOneCodeOfFirstMember;
+    private String goodsTwoCodeOfFirstMember;
 
     // second Member
     private Member secondMember;
     private Shop shopOfSecondMember;
-    private String goodsCodeOfSecondMember, goodsNameOfSecondMember, goodsCategoryOfSecondMember;
+    private String goodsOneCodeOfSecondMember;
+    private String goodsTwoCodeOfSecondMember;
 
     @BeforeEach
     public void setUp() {
@@ -29,26 +32,31 @@ class MemberTest {
 
         setFirstMember();
 
-        setSecondMemeber();
+        setSecondMember();
     }
 
 
     private void setFirstMember() {
         shopOfFirstMember = new Shop("shop1", "shopAdd1");
         firstMember = new Member("member1", "pw1", shopOfFirstMember);
-        goodsCodeOfFirstMember = "goods_code_a";
-        goodsNameOfFirstMember = "goods_name_1";
-        goodsCategoryOfFirstMember = "goods_category_1";
-        firstMember.makeOwnGoods(goodsCodeOfFirstMember, goodsNameOfFirstMember, goodsCategoryOfFirstMember);
+        goodsOneCodeOfFirstMember = "goods_code_1_a";
+        goodsTwoCodeOfFirstMember = "goods_code_1_b";
+        makeGoods("goods_name_1_1", "goods_category_1", firstMember, goodsOneCodeOfFirstMember);
+        makeGoods("goods_name_1_2", "goods_category_1", firstMember, goodsTwoCodeOfFirstMember);
     }
 
-    private void setSecondMemeber() {
+    private void setSecondMember() {
         shopOfSecondMember = new Shop("shop2", "shopAdd2");
         secondMember = new Member("member2", "pw2", shopOfFirstMember);
-        goodsCodeOfSecondMember = "goods_code_b";
-        goodsNameOfSecondMember = "goods_name_2";
-        goodsCategoryOfSecondMember = "goods_category_2";
-        secondMember.makeOwnGoods(goodsCodeOfSecondMember, goodsNameOfSecondMember, goodsCategoryOfSecondMember);
+        goodsOneCodeOfSecondMember = "goods_code_2_a";
+        goodsTwoCodeOfSecondMember = "goods_code_2_b";
+        makeGoods("goods_name_2_1", "goods_category_2", secondMember, goodsOneCodeOfSecondMember);
+        makeGoods("goods_name_2_2", "goods_category_2", secondMember, goodsTwoCodeOfSecondMember);
+    }
+
+
+    private void makeGoods(String name, String category, Member member, String goodsCode) {
+        member.makeOwnGoods(new GoodsDTO(goodsCode, name, category));
     }
 
 
@@ -68,7 +76,7 @@ class MemberTest {
     @DisplayName("회원이 상품을 생성한다.")
     public void testGoodsListOfMember() {
         String goodsCode = "goods_name_2";
-        Goods generatedGoods = firstMember.makeOwnGoods(goodsCode, "goods_name_b", "goods_category_2");
+        Goods generatedGoods = firstMember.makeOwnGoods(new GoodsDTO(goodsCode, "goods_name_b", "goods_category_2"));
 
         assertThat(generatedGoods, is(firstMember.getGoodsMap().get(goodsCode)));
     }
@@ -76,8 +84,7 @@ class MemberTest {
     @Test
     @DisplayName("회원이 소유한 상품을 코드별로 조회한다.")
     public void testGetGoods() {
-        String goodsCode = "goods_code_a";
-        assertThat(firstMember.getGoodsMap().get(goodsCode), is(new Goods("goods_name_1", "goods_category_1")));
+        assertThat(firstMember.getGoodsMap().get(goodsOneCodeOfFirstMember).getName(), is("goods_name_1_1"));
     }
 
     @Test
@@ -85,8 +92,8 @@ class MemberTest {
     public void testUpdateGoods() {
         String goodsNameUpdated = "goods_name_updated";
         String categoryUpdated = "goods_category_updated";
-        Goods updatedGoods = firstMember.updateGoods(goodsCodeOfFirstMember, goodsNameUpdated, categoryUpdated);
-        Goods goodsInMaps = firstMember.getGoodsMap().get(goodsCodeOfFirstMember);
+        Goods updatedGoods = firstMember.updateGoods(new GoodsDTO(goodsOneCodeOfFirstMember, goodsNameUpdated, categoryUpdated));
+        Goods goodsInMaps = firstMember.getGoodsMap().get(goodsOneCodeOfFirstMember);
         assertThat(updatedGoods, not(nullValue()));
         assertThat(goodsInMaps.getName(), is(goodsNameUpdated));
         assertThat(goodsInMaps.getCategory(), is(categoryUpdated));
@@ -95,19 +102,19 @@ class MemberTest {
     @Test
     @DisplayName("회원이 소유한 상품을 코드별로 삭제한다.")
     public void testDeleteGoods() {
-        boolean isExist = firstMember.deleteGoods(goodsCodeOfFirstMember);
+        boolean isExist = firstMember.removeOwnGoods(goodsOneCodeOfFirstMember);
         assertThat(isExist, is(true));
-        assertThat(firstMember.getGoodsMap().getOrDefault(goodsCodeOfFirstMember, null), is(nullValue()));
+        assertThat(firstMember.getGoodsMap().getOrDefault(goodsOneCodeOfFirstMember, null), is(nullValue()));
     }
 
     @Test
     @DisplayName("회원이 소유하지 않은 상품을 조회할 수 있다.")
     public void testGetOtherMemberOwnGoods() {
-        Map<String, Goods> goodsListOfSecondMember = firstMember.getOtherMemberGoodsList(secondMember);
-        Goods goodsOfSecondMember = goodsListOfSecondMember.get(goodsCodeOfSecondMember);
+        Map<String, Goods> goodsListOfSecondMember = firstMember.getOtherMemberGoodsMap(secondMember);
+        Goods goodsOfSecondMember = goodsListOfSecondMember.get(goodsOneCodeOfSecondMember);
 
         System.out.println(goodsOfSecondMember.getName());
-        assertThat(goodsOfSecondMember, is(secondMember.getGoodsMap().get(goodsCodeOfSecondMember)));
+        assertThat(goodsOfSecondMember, is(secondMember.getGoodsMap().get(goodsOneCodeOfSecondMember)));
     }
 
     @Test
@@ -117,17 +124,16 @@ class MemberTest {
 //        firstGoods.updateName("abc"); // 수정은 불가해야 함 => 가변 객체로 했을 시 수정 가능하게 됨
 //        assertThat(firstGoods.getName(), not("abc"));
 
-        Goods updatedGoods = secondMember.updateGoods(goodsCodeOfFirstMember, "abc", "abcd");
+        Goods updatedGoods = secondMember.updateGoods(new GoodsDTO(goodsOneCodeOfFirstMember, "abc", "abcd"));
         assertThat(updatedGoods, is(nullValue()));
     }
 
     @Test
     @DisplayName("회원이 소유하지 않은 상품은 삭제할 수 없다.")
     public void testNotDeletedOtherMemberOwnGoods() {
-        assertThat(secondMember.deleteGoods(goodsCodeOfFirstMember), is(false));
-        assertThat(firstMember.getGoodsMap().get(goodsCodeOfFirstMember), not(nullValue()));
+        assertThat(secondMember.removeOwnGoods(goodsOneCodeOfFirstMember), is(false));
+        assertThat(firstMember.getGoodsMap().get(goodsOneCodeOfFirstMember), not(nullValue()));
     }
-
 
 }
 
