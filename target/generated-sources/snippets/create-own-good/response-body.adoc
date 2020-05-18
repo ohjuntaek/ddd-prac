@@ -1,0 +1,8 @@
+[source,options="nowrap"]
+----
+{
+  "code" : "gcode",
+  "name" : "gname",
+  "category" : "gcategory"
+}
+----

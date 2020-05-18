@@ -1,6 +1,17 @@
 ###
 
-POST localhost:8080/goods?memberloginid=buyer
+POST localhost:8080/goods?member_login_id=buyer
+Content-Type: application/json
+
+{
+  "code": "gcode",
+  "name": "gname",
+  "category": "gcategory"
+}
+
+###
+
+POST localhost:8080/goods?member_login_id=buyer
 Content-Type: application/json
 
 {
@@ -11,7 +22,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8080/goods?memberloginid=buyer
+POST localhost:8080/goods?member_login_id=buyer
 Content-Type: application/json
 
 {
@@ -22,7 +33,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8080/goods?memberloginid=seller
+POST localhost:8080/goods?member_login_id=seller
 Content-Type: application/json
 
 {
@@ -33,7 +44,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8080/goods?memberloginid=seller
+POST localhost:8080/goods?member_login_id=seller
 Content-Type: application/json
 
 {
@@ -44,7 +55,7 @@ Content-Type: application/json
 
 ###
 
-PUT localhost:8080/goods?memberloginid=buyer
+PUT localhost:8080/goods?member_login_id=buyer
 Content-Type: application/json
 
 {
@@ -59,7 +70,7 @@ Content-Type: application/json
 
 ###
 
-POST localhost:8080/order/seller?memberloginid=buyer
+POST localhost:8080/order/seller?member_login_id=buyer
 Content-Type: application/json
 
 {

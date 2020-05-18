@@ -1,0 +1,10 @@
+[source,bash]
+----
+$ echo '{
+  "code" : "code",
+  "name" : "gname",
+  "category" : "gcategory"
+}' | http POST 'http://localhost:8080/goods?member_login_id=buyer' \
+    'Content-Type:application/json;charset=utf-8' \
+    'Accept:application/json'
+----
