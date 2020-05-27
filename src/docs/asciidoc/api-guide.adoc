@@ -1,0 +1,100 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+= API 문서
+API 문서 입니다.
+:toc: left
+:toc-title: 목차
+:toclevels: 2
+:sectnumlevels: 2
+:sectnums:
+:sectlinks:
+:icons: font
+
+== asciidoc 기본 사용법
+
+asciidoc 기본 사용법에 대해 다룹니다.
+
+https://narusas.github.io/2018/03/21/Asciidoc-basic.html
+
+https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
+
+include::asciidocs-guide.adoc[]
+
+== 전체 API
+
+전체 API에 대한 목록과 개발 진행 현황을 다룹니다.
+
+[NOTE]
+====
+회원 유형은 단순히 회원 밖에 없습니다.
+
+회원 유형에 대한 정의 필요.
+====
+
+[cols="2,3,2"]
+.회원
+|===
+|API 이름 | 설명 | 진행 현황
+
+|회원 가입 |회원이 자신의 정보를 생성한다 |X
+|회원 조회 |회원이 자신의 정보를 조회한다 |X
+
+|===
+
+[cols="2,3,2"]
+.회원 - 상품
+|===
+|API 이름 | 설명 | 진행 현황
+
+|상품 조회 |회원이 자신의 상품을 조회한다 |완료
+|타회원 상품 조회 |회원이 타회원의 상품을 조회한다 |완료
+|상품 생성 |회원이 자신의 상품을 생성한다. |완료
+
+|===
+
+[cols="2,3,2"]
+.주문
+|===
+|API 이름 | 설명 | 진행 현황
+
+|주문 | 회원이 다른 회원의 상품을 주문한다. | 완료
+|주문 거절 | 판매자가 주문을 거절한다 | 진행 중
+|주문 승낙 | 판매자가 주문을 승낙해 거래가 완료된다. | 완료
+
+|===
+
+== 회원
+
+=== 회원 조회
+
+== 회원 - 상품
+
+include::member/goods/docs_get.adoc[]
+
+link:/docs/member/goods/docs_get.html[상품 조회 문서]
+
+== 상품 생성
+
+회원이 자신의 상품을 생성한다.
+
+==== curl 사용 예시
+
+include::{snippets}/create-own-good/curl-request.adoc[]
+
+=== 요청
+
+==== Request Headers
+
+include::{snippets}/create-own-good/request-headers.adoc[]
+
+==== Request Fields
+
+include::{snippets}/create-own-good/request-fields.adoc[]
+
+=== 응답
+
+==== Response Body Fields
+
+include::{snippets}/create-own-good/response-fields.adoc[]
+

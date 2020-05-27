@@ -21,19 +21,28 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Goods createGoodsOfMember(String memberLoginId, GoodsDTO goodsDTO) {
+    public GoodsDTO createGoodsOfMember(String memberLoginId, GoodsDTO goodsDTO) {
         Member member = memberRepository.findMemberByLoginId(memberLoginId);
-        return member.makeOwnGoods(goodsDTO);
+        member.makeOwnGoods(goodsDTO);
+        return goodsDTO;
     }
 
-    public Map<String, Goods> getGoodsMapOfMember(String memberLoginId) {
+    public List<GoodsDTO> getGoodsListOfMember(String memberLoginId) {
         Member member = memberRepository.findMemberByLoginId(memberLoginId);
-        return member.getGoodsMap();
+        Map<String, Goods> goodsMap = member.getGoodsMap();
+        return convertGoodsMapToList(goodsMap);
     }
 
-    public Goods getGoodsByCode(String memberLoginId, String code) {
+    private List<GoodsDTO> convertGoodsMapToList(Map<String, Goods> goodsMap) {
+        return goodsMap.entrySet().stream()
+                .map((entry) -> new GoodsDTO(entry.getKey(), entry.getValue().getName(), entry.getValue().getCategory()))
+                .collect(Collectors.toList());
+    }
+
+    public GoodsDTO getGoodsByCode(String memberLoginId, String code) {
         Member member = memberRepository.findMemberByLoginId(memberLoginId);
-        return member.getGoodsMap().get(code);
+        Goods goods = member.getGoodsMap().get(code);
+        return new GoodsDTO(code, goods.getName(), goods.getCategory());
     }
 
 
@@ -61,12 +70,10 @@ public class MemberService {
     public void approveOrder(final ApprovedOrderEvent event) {
         final Member seller = memberRepository.findMemberByLoginId(event.getMemberLoginId());
 
+        List<String> goodsCodeList = event.getGoodsCodeList();
         Map<String, Goods> goodsMapInOrder = seller.getGoodsMap().entrySet().stream()
-                .filter((entry) -> {
-                    List<String> goodsCodeList = event.getGoodsCodeList();
-                    return goodsCodeList.stream()
-                            .anyMatch(Predicate.isEqual(entry.getKey()));
-                })
+                .filter((entry) -> goodsCodeList.stream()
+                        .anyMatch(Predicate.isEqual(entry.getKey())))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         seller.approveOrder(goodsMapInOrder);

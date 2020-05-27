@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,37 +17,38 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/goods")
-    public ResponseEntity<Goods> createGoods(@RequestParam("memberloginid") String memberLoginId, @RequestBody GoodsDTO goodsDTO) {
-        Goods body = memberService.createGoodsOfMember(memberLoginId, goodsDTO);
+    public ResponseEntity<GoodsDTO> createOwnGoods(@RequestParam("member_login_id") String memberLoginId, @RequestBody GoodsDTO goodsDTO) {
+        GoodsDTO body = memberService.createGoodsOfMember(memberLoginId, goodsDTO);
         return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/goods")
-    public ResponseEntity<Map<String, Goods>> getGoodsMapOfMember(@RequestParam("memberloginid") String memberLoginId) {
-        Map<String, Goods> body = memberService.getGoodsMapOfMember(memberLoginId);
+    public ResponseEntity<List<GoodsDTO>> getGoodsMapOfMember(@RequestParam("member_login_id") String memberLoginId) {
+        List<GoodsDTO> body = memberService.getGoodsListOfMember(memberLoginId);
         return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/goods/{code}")
-    public ResponseEntity<Goods> getGoodsOfMember(@RequestParam("memberloginid") String memberLoginId, @PathVariable String code) {
-        Goods body = memberService.getGoodsByCode(memberLoginId, code);
+    public ResponseEntity<GoodsDTO> getGoodsOfMemberByCode(@RequestParam("member_login_id") String memberLoginId, @PathVariable String code) {
+        GoodsDTO body = memberService.getGoodsByCode(memberLoginId, code);
+
         return ResponseEntity.ok().body(body);
     }
 
     @GetMapping("/{otherMemberLoginId}/goods")
-    public ResponseEntity<Map<String, Goods>> getGoodOfOtherMember(@RequestParam("memberloginid") String memberLoginId, @PathVariable String otherMemberLoginId) {
+    public ResponseEntity<Map<String, Goods>> getGoodOfOtherMember(@RequestParam("member_login_id") String memberLoginId, @PathVariable String otherMemberLoginId) {
         Map<String, Goods> body = memberService.getGoodsMapOfOtherMember(memberLoginId, otherMemberLoginId);
         return ResponseEntity.ok().body(body);
     }
 
     @PutMapping("/goods")
-    public ResponseEntity<Goods> updateGoods(@RequestParam("memberloginid") String memberLoginId, @RequestBody GoodsDTO goodsDTO) {
+    public ResponseEntity<Goods> updateGoods(@RequestParam("member_login_id") String memberLoginId, @RequestBody GoodsDTO goodsDTO) {
         Goods body = memberService.updateGoods(memberLoginId, goodsDTO);
         return ResponseEntity.ok().body(body);
     }
 
     @DeleteMapping("/goods/{code}")
-    public ResponseEntity<Boolean> deleteGoods(@RequestParam("memberloginid") String memberLoginId, @PathVariable String code) {
+    public ResponseEntity<Boolean> deleteGoods(@RequestParam("member_login_id") String memberLoginId, @PathVariable String code) {
         boolean body = memberService.deleteGoodsOfMemberByCode(memberLoginId, code);
         return ResponseEntity.ok().body(body);
     }

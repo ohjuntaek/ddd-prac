@@ -15,7 +15,7 @@ public class Goods {
     @Getter
     private String category;
 
-    public Goods(String name, String category) {
+    protected Goods(String name, String category) {
         this.name = name;
         this.category = category;
     }

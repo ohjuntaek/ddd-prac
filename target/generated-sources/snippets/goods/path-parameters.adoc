@@ -1,0 +1,8 @@
+.+/goods/{code}+
+|===
+|Parameter|Description
+
+|`+code+`
+|조회할 상품 코드
+
+|===

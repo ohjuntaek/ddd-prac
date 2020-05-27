@@ -79,7 +79,9 @@ domain driven design 연습 repo
 - [] 유일성 테스트
 
 <FK : member_id(소유)>
+
 <회원 (1 : N) 상품>
+
 Map<String, Goods> goodsMap
 
 - [x] 회원이 상품을 생성한다.

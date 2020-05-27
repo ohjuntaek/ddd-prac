@@ -1,0 +1,11 @@
+[source,bash]
+----
+$ curl 'http://localhost:8080/goods?member_login_id=buyer' -i -X POST \
+    -H 'Content-Type: application/json;charset=utf-8' \
+    -H 'Accept: application/json' \
+    -d '{
+  "code" : "code",
+  "name" : "gname",
+  "category" : "gcategory"
+}'
+----

@@ -1,0 +1,10 @@
+|===
+|Name|Description
+
+|`+Accept+`
+|accept heaader
+
+|`+Content-Type+`
+|content type header
+
+|===

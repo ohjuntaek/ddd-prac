@@ -1,0 +1,7 @@
+|===
+|Parameter|Description
+
+|`+member_login_id+`
+|멤버의 로그인 아이디
+
+|===
